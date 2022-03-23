@@ -8,9 +8,8 @@ void intro(){
 int main() {
     intro();
 
-    MinesweeperBoard gameBoard(12,7,DEBUG);
+    MinesweeperBoard gameBoard(5,7,DEBUG);
     gameBoard.debug_display();
-    std::cout<<gameBoard.getFieldInfo(1,1);
 
     return 0;
 }

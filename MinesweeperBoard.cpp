@@ -11,7 +11,7 @@ MinesweeperBoard::MinesweeperBoard(int boardWidth, int boardHeight, GameMode mod
     height = boardHeight;
     mineCount = (width*height)*(mode/10.0);
     state = RUNNING;
-    first_action = false;
+    first_action = true;
     gmode = mode;
     clear_board();
     srand(time(NULL));
@@ -79,14 +79,14 @@ bool MinesweeperBoard::inBoard(int row, int col) const {
 }
 
 int MinesweeperBoard::countMines(int row, int col) const {
-    if (!board[row][col].isRevealed) { return -1; }
     if (!inBoard(row, col)) { return -1; }
+    if (!board[row][col].isRevealed) { return -1; }
     int count=0;
     for(int row2=row-1; row2<=row+1; row2++)
     {
         for(int col2=col-1; col2<=col+1; col2++)
         {
-            if (inBoard(row2,col2))
+            if (inBoard(row2,col2) && (row2!=row || col2!=col))
             {
                 if (board[row2][col2].hasMine) { count++; }
             }
@@ -113,8 +113,8 @@ void MinesweeperBoard::revealField(int row, int col) {
     else{
         if (!board[row][col].hasMine) { board[row][col].isRevealed = true; }
         else{
-            if (!first_action && gmode) {
-                first_action = true;
+            if (first_action && gmode) {
+                first_action = false;
                 board[row][col].hasMine = false;
                 create_mine();
                 board[row][col].isRevealed = true;
