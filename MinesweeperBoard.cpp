@@ -146,7 +146,7 @@ char MinesweeperBoard::getFieldInfo(int row, int col) const {
     else {
         if (board[row][col].hasMine) { return 'x'; }
         int mines = countMines(row,col);
-        if (mines) { return char(mines+48); }
+        if (mines) { return char(mines+'0'); }
         else { return ' '; }
     }
 }
