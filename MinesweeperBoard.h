@@ -18,7 +18,8 @@ class MinesweeperBoard {
     Field board[100][100];
     int width;
     int height;
-    int mineCount;
+    int countOfMines;
+    int countRevealField;
     bool first_action;
     GameMode gmode;
     GameState state;
@@ -26,7 +27,7 @@ class MinesweeperBoard {
     void create_mine();
 
 public:
-    MinesweeperBoard(int boardWidth, int boardHeight, GameMode mode);
+    MinesweeperBoard(int w, int h);
     void debug_display() const;
     int getBoardWidth() const;
     int getBoardHeight() const;
@@ -39,6 +40,14 @@ public:
     void revealField(int row, int col);
     GameState getGameState() const;
     char getFieldInfo(int row, int col) const;
+    bool getHasMine(int row, int col) const;
+    void chcekAroud(int row,int col);
+    void setSize(int swidth, int sheight);
+    void startGame();
+    void setGameMode(GameMode mode);
+    GameMode getGameMode() const;
+    int getCountRevealField() const;
+    int getCountOfMines() const;
 };
 
 

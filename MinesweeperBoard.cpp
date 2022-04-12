@@ -6,31 +6,12 @@
 #include <time.h>
 #include "MinesweeperBoard.h"
 
-MinesweeperBoard::MinesweeperBoard(int boardWidth, int boardHeight, GameMode mode){
+MinesweeperBoard::MinesweeperBoard(int boardWidth, int boardHeight){
     width = boardWidth;
     height = boardHeight;
-    mineCount = (width*height)*(mode/10.0);
-    state = RUNNING;
-    first_action = true;
-    gmode = mode;
-    clear_board();
-    srand(time(NULL));
-    if (mode){
-        for(int mines=0; mines<mineCount; mines++){
-            create_mine();
-        }
-    }
-    else {
-        for (int diagonal=0; diagonal<height && diagonal<width; diagonal++){
-            board[diagonal][diagonal].hasMine = true;
-        }
-        for (int col2=0; col2<width; col2++){
-            board[0][col2].hasMine = true;
-        }
-        for (int row2=0; row2<height; row2++){
-            if (row2 % 2 == 0) { board[row2][0].hasMine = true; }
-        }
-    }
+    countOfMines = 0;
+    countRevealField = 0;
+    gmode = EASY;
 }
 
 void MinesweeperBoard::clear_board(){
@@ -70,7 +51,7 @@ int MinesweeperBoard::getBoardHeight() const{
 }
 
 int MinesweeperBoard::getMineCount() const{
-    return mineCount;
+    return countOfMines;
 }
 
 bool MinesweeperBoard::inBoard(int row, int col) const {
@@ -111,13 +92,22 @@ void MinesweeperBoard::toggleFlag(int row, int col) {
 void MinesweeperBoard::revealField(int row, int col) {
     if ((!inBoard(row,col)) || (board[row][col].isRevealed) || (board[row][col].hasFlag) || state) {}
     else{
-        if (!board[row][col].hasMine) { board[row][col].isRevealed = true; }
+        if (!board[row][col].hasMine) {
+            board[row][col].isRevealed = true;
+            countRevealField ++;
+            if (getFieldInfo(row,col) == ' ')
+                chcekAroud(row,col);
+            if(countRevealField + countOfMines == width*height)
+                state = FINISHED_WIN;
+        }
         else{
             if (first_action && gmode) {
-                first_action = false;
                 board[row][col].hasMine = false;
                 create_mine();
                 board[row][col].isRevealed = true;
+                countRevealField++;
+                if (getFieldInfo(row,col) == ' ')
+                    chcekAroud(row,col);
             }
             else {
                 board[row][col].isRevealed = true;
@@ -125,6 +115,7 @@ void MinesweeperBoard::revealField(int row, int col) {
             }
         }
     }
+    first_action = false;
 }
 
 bool MinesweeperBoard::isRevealed(int row, int col) const {
@@ -158,4 +149,68 @@ void MinesweeperBoard::create_mine() {
         col_number = rand() % width;
     }while(board[row_number][col_number].hasMine);
     board[row_number][col_number].hasMine = true;
+}
+
+bool MinesweeperBoard::getHasMine(int row, int col) const {
+    return board[row][col].hasMine;
+}
+
+void MinesweeperBoard::chcekAroud(int row,int col){
+    for(int chcekrow = row-1; chcekrow <= row+1; chcekrow++){
+        for(int chcekcol = col-1; chcekcol <= col+1; chcekcol++){
+            if(!getHasMine(chcekrow,chcekcol)) {
+                revealField(chcekrow, chcekcol);
+            }
+        }
+    }
+}
+
+void MinesweeperBoard::setSize(int swidth, int sheight) {
+    if(swidth > 28) { swidth = 28; }
+    if(sheight > 18) { sheight = 18; }
+    width = swidth;
+    height = sheight;
+    startGame();
+}
+
+void MinesweeperBoard::startGame(){
+    clear_board();
+    countRevealField = 0;
+    state = RUNNING;
+    first_action = true;
+    countOfMines = (width * height) * (gmode / 10.0);
+    state = RUNNING;
+    srand(time(NULL));
+    if (gmode){
+        for(int mines=0; mines < countOfMines; mines++){
+            create_mine();
+        }
+    }
+    else {
+        for (int diagonal=0; diagonal<height && diagonal<width; diagonal++){
+            board[diagonal][diagonal].hasMine = true;
+        }
+        for (int col2=0; col2<width; col2++){
+            board[0][col2].hasMine = true;
+        }
+        for (int row2=0; row2<height; row2++){
+            if (row2 % 2 == 0) { board[row2][0].hasMine = true; }
+        }
+    }
+}
+
+void MinesweeperBoard::setGameMode(GameMode mode) {
+    gmode = mode;
+}
+
+GameMode MinesweeperBoard::getGameMode() const{
+    return gmode;
+}
+
+int MinesweeperBoard::getCountRevealField() const {
+    return countRevealField;
+}
+
+int MinesweeperBoard::getCountOfMines() const {
+    return countOfMines;
 }

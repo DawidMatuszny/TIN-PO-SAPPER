@@ -10,9 +10,14 @@
 
 class MSSFMLView {
 MinesweeperBoard &msBoard;
+int selectedBox;
 public:
     explicit MSSFMLView(MinesweeperBoard &board);
     void draw(sf::RenderWindow &win);
+    void drawMenu(sf::RenderWindow &win, sf::String width, sf::String height);
+    void changeSelectedBox(int select);
+    int getSelectedBox() const;
+    void selectDifficult(GameMode mode);
 };
 
 
