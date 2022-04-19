@@ -6,12 +6,11 @@
 #include <time.h>
 #include "MinesweeperBoard.h"
 
-MinesweeperBoard::MinesweeperBoard(int boardWidth, int boardHeight){
+MinesweeperBoard::MinesweeperBoard(int boardWidth, int boardHeight, GameMode mode){
     width = boardWidth;
     height = boardHeight;
-    countOfMines = 0;
-    countRevealField = 0;
-    gmode = EASY;
+    gmode = mode;
+    startGame();
 }
 
 void MinesweeperBoard::clear_board(){
@@ -95,6 +94,7 @@ void MinesweeperBoard::revealField(int row, int col) {
         if (!board[row][col].hasMine) {
             board[row][col].isRevealed = true;
             countRevealField ++;
+            first_action = false;
             if (getFieldInfo(row,col) == ' ')
                 chcekAroud(row,col);
             if(countRevealField + countOfMines == width*height)
@@ -103,9 +103,10 @@ void MinesweeperBoard::revealField(int row, int col) {
         else{
             if (first_action && gmode) {
                 board[row][col].hasMine = false;
-                create_mine();
                 board[row][col].isRevealed = true;
+                create_mine();
                 countRevealField++;
+                first_action = false;
                 if (getFieldInfo(row,col) == ' ')
                     chcekAroud(row,col);
             }
@@ -115,7 +116,6 @@ void MinesweeperBoard::revealField(int row, int col) {
             }
         }
     }
-    first_action = false;
 }
 
 bool MinesweeperBoard::isRevealed(int row, int col) const {
@@ -147,7 +147,7 @@ void MinesweeperBoard::create_mine() {
     do {
         row_number = rand() % height;
         col_number = rand() % width;
-    }while(board[row_number][col_number].hasMine);
+    }while(board[row_number][col_number].hasMine || board[row_number][col_number].isRevealed);
     board[row_number][col_number].hasMine = true;
 }
 

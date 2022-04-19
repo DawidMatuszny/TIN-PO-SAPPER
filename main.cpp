@@ -11,15 +11,14 @@ void intro(){
 
 int main() {
     intro();
-    MinesweeperBoard board(0,0);
+    MinesweeperBoard board(10,10, EASY);
     sf::RenderWindow window(sf::VideoMode(900,500), "Sapper");
     window.setVerticalSyncEnabled(false);
     window.setFramerateLimit(30);
     MSSFMLView view(board);
-    sf::Font font;
-    if(!font.loadFromFile("GothicA1-Black.ttf")) { std::cout << "Blad"; }
     int clickrow, clickcol, coordX, coordY, width, height;
     sf::String textwidth, textheight;
+
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -34,9 +33,11 @@ int main() {
                 if (coordY % 25 >= 5 && coordX % 25 >= 5 && coordX <= ((board.getBoardWidth() * 25) + 5)) {
                     if (event.mouseButton.button == sf::Mouse::Left)
                         board.revealField(clickrow, clickcol);
+
                     if (event.mouseButton.button == sf::Mouse::Right)
                         board.toggleFlag(clickrow, clickcol);
                 }
+
                 if (event.mouseButton.button == sf::Mouse::Left) {
                     if (coordX > 780 && coordX < 880 && coordY > 10 && coordY < 30)
                         view.changeSelectedBox(1);

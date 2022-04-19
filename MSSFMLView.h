@@ -11,6 +11,10 @@
 class MSSFMLView {
 MinesweeperBoard &msBoard;
 int selectedBox;
+sf::RectangleShape field, border, flag1, flag2, button, boxwidth, boxheight, difficulty;
+sf::CircleShape mine;
+sf::Font font;
+sf::Text numberOfMines, textBox, buttonText;
 public:
     explicit MSSFMLView(MinesweeperBoard &board);
     void draw(sf::RenderWindow &win);

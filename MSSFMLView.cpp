@@ -6,31 +6,35 @@
 
 MSSFMLView::MSSFMLView(MinesweeperBoard &board) : msBoard(board) {
     selectedBox = 0;
+    if(!font.loadFromFile("../font/GothicA1-Black.ttf")) { std::cout << "Blad"; }
+    numberOfMines.setFont(font);
+    numberOfMines.setCharacterSize(18);
+    buttonText.setFont(font);
+    buttonText.setCharacterSize(14);
+    textBox.setFont(font);
+    textBox.setCharacterSize(15);
+    mine.setRadius(10);
+    border.setSize({20,20});
+    field.setSize(sf::Vector2f(20, 20));
+    flag1.setSize({20,12});
+    flag2.setSize({5,20});
+    button.setSize({100,40});
+    boxwidth.setSize({100,20});
+    boxheight.setSize({100,20});
+    difficulty.setSize({33,20});
 }
 
 void MSSFMLView::draw(sf::RenderWindow &win) {
-    sf::Font font;
-    if(!font.loadFromFile("GothicA1-Black.ttf")) { std::cout << "Blad"; }
-    sf::Text numberOfMines(" ", font, 18);
-    sf::RectangleShape field, border;
-    sf::CircleShape mine(10);
-    sf::RectangleShape flag1({20,12});
-    sf::RectangleShape flag2({5,20});
 
     flag1.setFillColor(sf::Color::Blue);
     flag2.setFillColor(sf::Color::Blue);
     mine.setFillColor(sf::Color::Red);
-    field.setSize(sf::Vector2f(20, 20));
     field.setFillColor(sf::Color::White);
     field.setOutlineColor(sf::Color{150,150,150});
     field.setOutlineThickness(1);
-    border.setSize({20,20});
     border.setFillColor(sf::Color::Black);
     border.setOutlineColor(sf::Color{255,212,139});
     border.setOutlineThickness(1);
-
-
-
 
     for(int row=0; row<msBoard.getBoardHeight(); row++){
         for(int col=0; col<msBoard.getBoardWidth(); col++){
@@ -70,15 +74,9 @@ void MSSFMLView::draw(sf::RenderWindow &win) {
 }
 
 void MSSFMLView::drawMenu(sf::RenderWindow &win, sf::String width, sf::String height) {
-    sf::Font font;
-    if(!font.loadFromFile("GothicA1-Black.ttf")) { std::cout << "Blad"; }
-    sf::RectangleShape button ({100,40});
-    sf::Text buttonText("", font, 14);
-    sf::RectangleShape boxwidth ({100,20});
-    sf::RectangleShape boxheight ({100,20});
-    sf::RectangleShape difficulty ({33, 20});
-    sf::Text textBox("", font, 15);
+
     textBox.setFillColor(sf::Color::Black);
+    buttonText.setOutlineThickness(0);
     if(selectedBox == 0){
         boxwidth.setFillColor(sf::Color::White);
         boxheight.setFillColor(sf::Color::White);
@@ -177,7 +175,6 @@ void MSSFMLView::drawMenu(sf::RenderWindow &win, sf::String width, sf::String he
         buttonText.setFillColor(sf::Color{254,154,26});
         buttonText.setCharacterSize(30);
         buttonText.setPosition(300, 230);
-        buttonText.rotate(15);
         win.draw(buttonText);
     }
     if (msBoard.getGameState() == FINISHED_LOSS)

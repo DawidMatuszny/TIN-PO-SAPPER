@@ -27,7 +27,7 @@ class MinesweeperBoard {
     void create_mine();
 
 public:
-    MinesweeperBoard(int w, int h);
+    MinesweeperBoard(int boardWidth, int boardHeight, GameMode mode);
     void debug_display() const;
     int getBoardWidth() const;
     int getBoardHeight() const;
