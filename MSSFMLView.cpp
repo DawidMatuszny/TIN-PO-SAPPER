@@ -9,7 +9,7 @@ MSSFMLView::MSSFMLView(MinesweeperBoard &board, int size, int borderSize) : msBo
     fieldBorder = borderSize;
     fieldClickableSize = fieldSize - fieldBorder;
     selectedBox = 0;
-    if(!font.loadFromFile("../font/GothicA1-Black.ttf")) { std::cout << "Blad"; }
+    if(!font.loadFromFile("../font/GothicA1-Black.ttf")) { abort(); }
     numberOfMines.setFont(font);
     numberOfMines.setCharacterSize(fieldClickableSize/1.5);
     buttonText.setFont(font);

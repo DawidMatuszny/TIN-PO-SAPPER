@@ -20,7 +20,12 @@ int main() {
     MSSFMLController ctrl(window, board, view);
 
     while (window.isOpen()) {
-        ctrl.EventLoop();
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed)
+                window.close();
+            ctrl.EventLoop(event);
+        }
         window.clear();
         view.draw(window);
         view.drawMenu(window, ctrl.getInputSizeWidth(), ctrl.getInputSizeHeight());

@@ -17,7 +17,7 @@ sf::String inputSizeWidth, inputSizeHeight;
 int clickrow, clickcol, coordX, coordY, width, height, fieldSize, fieldBorder;
 public:
     MSSFMLController(sf::RenderWindow &window, MinesweeperBoard &board, MSSFMLView &view);
-    void EventLoop();
+    void EventLoop(sf::Event &event);
     sf::String getInputSizeWidth();
     sf::String getInputSizeHeight();
 };
