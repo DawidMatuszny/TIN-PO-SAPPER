@@ -4,20 +4,23 @@
 #include <iostream>
 #include "MSSFMLView.h"
 
-MSSFMLView::MSSFMLView(MinesweeperBoard &board) : msBoard(board) {
+MSSFMLView::MSSFMLView(MinesweeperBoard &board, int size, int borderSize) : msBoard(board) {
+    fieldSize = size;
+    fieldBorder = borderSize;
+    fieldClickableSize = fieldSize - fieldBorder;
     selectedBox = 0;
     if(!font.loadFromFile("../font/GothicA1-Black.ttf")) { std::cout << "Blad"; }
     numberOfMines.setFont(font);
-    numberOfMines.setCharacterSize(18);
+    numberOfMines.setCharacterSize(fieldClickableSize/1.5);
     buttonText.setFont(font);
     buttonText.setCharacterSize(14);
     textBox.setFont(font);
     textBox.setCharacterSize(15);
-    mine.setRadius(10);
-    border.setSize({20,20});
-    field.setSize(sf::Vector2f(20, 20));
-    flag1.setSize({20,12});
-    flag2.setSize({5,20});
+    mine.setRadius(fieldClickableSize / 2);
+    border.setSize(sf::Vector2f(fieldClickableSize, fieldClickableSize));
+    field.setSize(sf::Vector2f(fieldClickableSize, fieldClickableSize));
+    flag1.setSize(sf::Vector2f(fieldClickableSize,fieldClickableSize*0.6));
+    flag2.setSize(sf::Vector2f(fieldClickableSize*0.25,fieldClickableSize));
     button.setSize({100,40});
     boxwidth.setSize({100,20});
     boxheight.setSize({100,20});
@@ -39,19 +42,19 @@ void MSSFMLView::draw(sf::RenderWindow &win) {
     for(int row=0; row<msBoard.getBoardHeight(); row++){
         for(int col=0; col<msBoard.getBoardWidth(); col++){
             if(msBoard.getFieldInfo(row,col) == 'x') {
-                mine.setPosition(5 + col * 25, 5 + row * 25);
+                mine.setPosition(fieldBorder + col * fieldSize, fieldBorder + row * fieldSize);
                 win.draw(mine);
             }
 
             if(msBoard.getFieldInfo(row,col) == '_') {
-                field.setPosition(5 + col * 25, 5 + row * 25);
+                field.setPosition(fieldBorder + col * fieldSize, fieldBorder + row * fieldSize);
                 win.draw(field);
             }
 
             if(msBoard.getFieldInfo(row,col) == 'F'){
-                flag1.setPosition(5 + col * 25, 5 + row * 25);
-                flag2.setPosition(5 + col * 25, 5 + row * 25);
-                field.setPosition(5 + col * 25, 5 + row * 25);
+                flag1.setPosition(fieldBorder + col * fieldSize, fieldBorder + row * fieldSize);
+                flag2.setPosition(fieldBorder + col * fieldSize, fieldBorder + row * fieldSize);
+                field.setPosition(fieldBorder + col * fieldSize, fieldBorder + row * fieldSize);
                 win.draw(field);
                 win.draw(flag1);
                 win.draw(flag2);
@@ -59,14 +62,15 @@ void MSSFMLView::draw(sf::RenderWindow &win) {
 
             if(msBoard.getFieldInfo(row,col) > '0' && msBoard.getFieldInfo(row,col) < '9'){
                 numberOfMines.setString(msBoard.getFieldInfo(row,col));
-                numberOfMines.setPosition(10 + col * 25, 5 + row * 25);
-                border.setPosition(5 + col * 25, 5 + row * 25);
+                numberOfMines.setPosition( (fieldBorder + col * fieldSize) + fieldClickableSize * 0.28,
+                                           (fieldBorder + row * fieldSize) + fieldClickableSize * 0.1);
+                border.setPosition(fieldBorder + col * fieldSize, fieldBorder + row * fieldSize);
                 win.draw(border);
                 win.draw(numberOfMines);
             }
 
             if(msBoard.getFieldInfo(row,col) == ' '){
-                border.setPosition(5 + col * 25, 5 + row * 25);
+                border.setPosition(fieldBorder + col * fieldSize, fieldBorder + row * fieldSize);
                 win.draw(border);
             }
         }
@@ -199,4 +203,12 @@ int MSSFMLView::getSelectedBox() const {
 
 void MSSFMLView::selectDifficult(GameMode mode) {
     msBoard.setGameMode(mode);
+}
+
+int MSSFMLView::getFieldSize() const{
+    return fieldSize;
+}
+
+int MSSFMLView::getSpaceBetween() const{
+    return fieldBorder;
 }

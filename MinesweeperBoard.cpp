@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "MinesweeperBoard.h"
+#include "MSSFMLView.h"
 
 MinesweeperBoard::MinesweeperBoard(int boardWidth, int boardHeight, GameMode mode){
     width = boardWidth;
@@ -166,8 +167,6 @@ void MinesweeperBoard::chcekAroud(int row,int col){
 }
 
 void MinesweeperBoard::setSize(int swidth, int sheight) {
-    if(swidth > 28) { swidth = 28; }
-    if(sheight > 18) { sheight = 18; }
     width = swidth;
     height = sheight;
     startGame();

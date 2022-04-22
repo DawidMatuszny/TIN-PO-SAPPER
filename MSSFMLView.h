@@ -15,13 +15,16 @@ sf::RectangleShape field, border, flag1, flag2, button, boxwidth, boxheight, dif
 sf::CircleShape mine;
 sf::Font font;
 sf::Text numberOfMines, textBox, buttonText;
+int fieldSize, fieldBorder, fieldClickableSize;
 public:
-    explicit MSSFMLView(MinesweeperBoard &board);
+    explicit MSSFMLView(MinesweeperBoard &board,int size, int borderSize);
     void draw(sf::RenderWindow &win);
     void drawMenu(sf::RenderWindow &win, sf::String width, sf::String height);
     void changeSelectedBox(int select);
     int getSelectedBox() const;
     void selectDifficult(GameMode mode);
+    int getFieldSize() const;
+    int getSpaceBetween() const;
 };
 
 

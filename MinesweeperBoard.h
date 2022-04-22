@@ -25,6 +25,7 @@ class MinesweeperBoard {
     GameState state;
     void clear_board();
     void create_mine();
+    int maxWidth, maxHeight;
 
 public:
     MinesweeperBoard(int boardWidth, int boardHeight, GameMode mode);
