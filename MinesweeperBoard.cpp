@@ -2,8 +2,8 @@
 // Created by c on 17.03.2022.
 //
 #include <iostream>
-#include <stdlib.h>
-#include <time.h>
+#include <cstdlib>
+#include <ctime>
 #include "MinesweeperBoard.h"
 #include "MSSFMLView.h"
 

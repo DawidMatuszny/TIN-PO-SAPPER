@@ -3,9 +3,6 @@
 //
 
 #include "MSSFMLController.h"
-#include "SFML/Graphics.hpp"
-#include "MinesweeperBoard.h"
-#include "MSSFMLView.h"
 
 MSSFMLController::MSSFMLController(sf::RenderWindow &window, MinesweeperBoard &board, MSSFMLView &view)
 : mswindow(window), msboard(board),  msview(view) {
